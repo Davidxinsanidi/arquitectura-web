@@ -146,6 +146,19 @@
             text-decoration: underline;
         }
 
+        .video-placeholder {
+            background: #1a1a2e;
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .video-placeholder a {
+            color: #3b82f6;
+        }
+
         footer {
             text-align: center;
             padding: 2rem;
@@ -179,127 +192,150 @@
 </nav>
 
 <div class="container">
-    <!-- UNIDAD 3 -->
+    <!-- ============================================ -->
+    <!-- UNIDAD 3 - COMPLETA                           -->
+    <!-- ============================================ -->
     <div id="unit3" class="unit active-unit">
         <h2>Unidad 3. Microoperaciones y transferencia de registros</h2>
         <p><strong>Objetivo:</strong> Crear secuencias de operaciones básicas a través de ensambladores y compiladores para ejecutar operaciones a nivel registro.</p>
 
         <div class="card-topic">
             <h3>📌 3.1 Transferencia de registros</h3>
-            <p>Un registro es un almacenamiento temporal de datos dentro de la CPU. La transferencia de registros consiste en mover información de un registro a otro mediante señales de control. Se representa con notación RTL (<em>Register Transfer Level</em>): <code>R1 ← R2</code> (copia el contenido de R2 en R1).</p>
-            <p><strong>Ejemplo práctico:</strong> En ensamblador, <code>MOV R1, R2</code> realiza esta operación.</p>
+            <p>Un <strong>registro</strong> es un almacenamiento temporal de datos dentro de la CPU, implementado típicamente con flip-flops. La <strong>transferencia de registros</strong> consiste en mover información de un registro a otro mediante señales de control. Se representa con notación <strong>RTL (Register Transfer Level)</strong> [citation:2].</p>
+            <p><strong>Simbología RTL:</strong> <code>R1 ← R2</code> significa "copia el contenido de R2 en R1".</p>
+            <p><strong>Registros comunes:</strong> PC (Program Counter), MAR (Memory Address Register), MDR (Memory Data Register), IR (Instruction Register) [citation:2].</p>
+            <p><strong>Transferencia condicional:</strong> <code>P → R1 ← R2</code> (solo si P=1 se realiza la transferencia) [citation:2].</p>
         </div>
 
         <div class="card-topic">
             <h3>📌 3.2 Buses y transferencia de memoria</h3>
-            <p>Un bus es un conjunto de líneas de comunicación: bus de datos, bus de direcciones y bus de control. La transferencia entre memoria y CPU se realiza mediante instrucciones como <code>LOAD</code> (memoria → registro) y <code>STORE</code> (registro → memoria).</p>
-            <p><strong>Ejemplo:</strong> <code>LOAD R1, [dirección]</code> lleva un valor de memoria a R1.</p>
+            <p>Un <strong>bus</strong> es un conjunto de líneas de comunicación que permiten la transferencia de datos entre componentes. Existen tres tipos principales:</p>
+            <ul>
+                <li><strong>Bus de datos:</strong> Transporta la información.</li>
+                <li><strong>Bus de direcciones:</strong> Especifica la ubicación en memoria.</li>
+                <li><strong>Bus de control:</strong> Señales como read/write, interrupt, clock.</li>
+            </ul>
+            <p><strong>Instrucciones típicas:</strong> <code>LOAD R1, [dirección]</code> (memoria → registro), <code>STORE R1, [dirección]</code> (registro → memoria) [citation:10].</p>
+            <p><strong>Configuraciones de bus:</strong> Bus único (multiplexado), bus dedicado, o buses tri-estado [citation:10].</p>
         </div>
 
         <div class="card-topic">
             <h3>📌 3.3 Memoria caché (L1, L2, L3)</h3>
-            <p>La memoria caché reduce la latencia de acceso a datos frecuentes. Jerarquía:</p>
+            <p>La memoria caché es una memoria pequeña y rápida que almacena copias de datos de uso frecuente para reducir la latencia de acceso. La jerarquía típica es:</p>
             <table>
                 <thead>
                     <tr><th>Nivel</th><th>Ubicación</th><th>Capacidad típica</th><th>Latencia</th><th>¿Compartida?</th></tr>
                 </thead>
                 <tbody>
-                    <tr><td>L1</td><td>Dentro del núcleo</td><td>32KB - 64KB</td><td>~1 ns</td><td>No (por núcleo)</td></tr>
-                    <tr><td>L2</td><td>Dentro del núcleo o cerca</td><td>256KB - 1MB</td><td>~3-5 ns</td><td>Depende</td></tr>
-                    <tr><td>L3</td><td>Compartida entre núcleos</td><td>4MB - 32MB</td><td>~10-20 ns</td><td>Sí</td></tr>
+                    <tr><td><strong>L1</strong></td><td>Dentro del núcleo</td><td>32KB - 64KB</td><td>~1 ns</td><td>No (privada por núcleo)</td></tr>
+                    <tr><td><strong>L2</strong></td><td>Dentro del núcleo o cerca</td><td>256KB - 1MB</td><td>~3-5 ns</td><td>Depende de la arquitectura</td></tr>
+                    <tr><td><strong>L3</strong></td><td>Compartida entre núcleos</td><td>4MB - 32MB</td><td>~10-20 ns</td><td>Sí</td></tr>
                 </tbody>
             </table>
-            <p>La caché usa principios de localidad temporal y espacial para anticipar datos.</p>
+            <p>La caché se basa en los principios de <strong>localidad temporal</strong> (datos recién usados volverán a usarse) y <strong>localidad espacial</strong> (datos cercanos a los usados serán necesarios).</p>
+            <p><strong>Políticas de reemplazo:</strong> LRU (Least Recently Used), FIFO, Random.</p>
         </div>
 
         <div class="card-topic">
             <h3>📌 3.4 Microoperaciones aritméticas</h3>
-            <p>Operaciones a nivel de bits dentro de la ALU: suma, resta, incremento, decremento, suma con acarreo.</p>
-            <p><strong>Ejemplo:</strong> <code>ADD R1, R2, R3</code> → R1 ← R2 + R3</p>
-            <p><strong>Otro ejemplo:</strong> <code>INC R1</code> → R1 ← R1 + 1</p>
+            <p>Las microoperaciones aritméticas son operaciones básicas realizadas por la <strong>ALU (Unidad Aritmético-Lógica)</strong> sobre los datos almacenados en registros [citation:4].</p>
+            <p><strong>Operaciones fundamentales:</strong></p>
+            <ul>
+                <li><strong>Suma:</strong> <code>R1 ← R2 + R3</code> (ADD)</li>
+                <li><strong>Resta:</strong> <code>R1 ← R2 - R3</code> (SUB)</li>
+                <li><strong>Incremento:</strong> <code>R1 ← R1 + 1</code> (INC)</li>
+                <li><strong>Decremento:</strong> <code>R1 ← R1 - 1</code> (DEC)</li>
+                <li><strong>Suma con acarreo:</strong> <code>R1 ← R2 + R3 + C</code> (ADDC)</li>
+            </ul>
         </div>
 
         <div class="card-topic">
             <h3>📌 3.5 Microoperaciones lógicas</h3>
-            <p>Operaciones bit a bit: AND, OR, XOR, NOT. Se utilizan para enmascarar bits, comparar o modificar banderas.</p>
-            <p><strong>Ejemplo:</strong> <code>AND R1, R2, R3</code> → R1 ← R2 AND R3 (bit a bit)</p>
-            <p><strong>Tabla de verdad AND:</strong> 0 AND 0 = 0, 0 AND 1 = 0, 1 AND 0 = 0, 1 AND 1 = 1</p>
+            <p>Operaciones bit a bit sobre los datos en registros [citation:4]:</p>
+            <ul>
+                <li><strong>AND:</strong> <code>R1 ← R2 ∧ R3</code> (1 solo si ambos bits son 1)</li>
+                <li><strong>OR:</strong> <code>R1 ← R2 ∨ R3</code> (1 si al menos un bit es 1)</li>
+                <li><strong>XOR:</strong> <code>R1 ← R2 ⊕ R3</code> (1 si los bits son diferentes)</li>
+                <li><strong>NOT (Complemento):</strong> <code>R1 ← ¬R2</code> (invierte todos los bits)</li>
+            </ul>
+            <p><strong>Usos:</strong> Enmascaramiento de bits, comparaciones, operaciones booleanas.</p>
+            <p><strong>Tabla de verdad AND:</strong> 0∧0=0, 0∧1=0, 1∧0=0, 1∧1=1</p>
         </div>
 
         <div class="card-topic">
             <h3>📌 3.6 Microoperaciones de corrimientos</h3>
-            <p>Desplazamiento de bits hacia izquierda o derecha:</p>
+            <p>Los corrimientos desplazan los bits de un registro hacia la izquierda o derecha:</p>
             <ul>
-                <li><strong>Desplazamiento lógico:</strong> rellena con 0 (ej: 1101 >> 1 = 0110).</li>
-                <li><strong>Desplazamiento aritmético:</strong> conserva el bit de signo.</li>
-                <li><strong>Rotación:</strong> los bits que salen vuelven a entrar por el otro lado.</li>
+                <li><strong>Desplazamiento lógico:</strong> Rellena con ceros. Ej: <code>1101 > 1 = 0110</code></li>
+                <li><strong>Desplazamiento aritmético:</strong> Conserva el bit de signo. Útil para números con signo.</li>
+                <li><strong>Rotación (circular):</strong> Los bits que salen vuelven a entrar por el otro extremo.</li>
+                <li><strong>Rotación con acarreo:</strong> Incluye el bit de acarreo en la rotación.</li>
             </ul>
-            <p><strong>Ejemplo en C:</strong> <code>x << 2</code> desplaza lógicamente a la izquierda 2 posiciones.</p>
+            <p><strong>Ejemplo en C:</strong> <code>x << 2</code> desplaza lógicamente a la izquierda 2 posiciones (equivale a multiplicar por 4).</p>
         </div>
 
         <div class="resources">
             <strong>🔗 RECURSOS EXTERNOS - Unidad 3</strong><br>
-            📹 <a href="https://www.youtube.com/watch?v=1IAhQoHlqZg" target="_blank">Video: Transferencia de registros y notación RTL (YouTube)</a><br>
-            🧪 <a href="https://www.cs.umd.edu/~meesh/311/CMSC311/lectures/cache-simulator/" target="_blank">Simulador interactivo de memoria caché (Universidad de Maryland)</a><br>
-            📘 <a href="https://www.geeksforgeeks.org/micro-operations-in-computer-organization/" target="_blank">Artículo: Microoperaciones aritméticas, lógicas y de corrimiento (GeeksforGeeks)</a><br>
-            🎥 <a href="https://www.youtube.com/watch?v=f8gT2MIRP0c" target="_blank">Video: ¿Cómo funciona la memoria caché? (Explicación animada)</a>
+            📹 <a href="https://www.youtube.com/watch?v=cNN_tTXABUA" target="_blank">Video: How CPUs Work - Computerphile (YouTube)</a><br>
+            📘 <a href="https://www.geeksforgeeks.org/computer-organization-architecture/microprogramming-basics-1/" target="_blank">Microprogramming Basics - GeeksforGeeks</a><br>
+            📄 <a href="https://www.monografias.com/trabajos104/diseno-rtl-procesadores-aritmeticos/diseno-rtl-procesadores-aritmeticos" target="_blank">Diseño RTL de procesadores aritméticos - Monografías.com</a>
         </div>
     </div>
 
-    <!-- UNIDAD 4 -->
+    <!-- ============================================ -->
+    <!-- UNIDAD 4 - COMPLETA                           -->
+    <!-- ============================================ -->
     <div id="unit4" class="unit">
         <h2>Unidad 4. Unidades centrales de procesamiento RISC y CISC</h2>
         <p><strong>Objetivo:</strong> Analizar los tipos de arquitectura más comunes, mediante la distinción de cada una de sus partes, para proponer una arquitectura a problemas específicos.</p>
 
         <div class="card-topic">
             <h3>📌 4.1 Rutas de datos segmentadas</h3>
-            <p>La ruta de datos segmentada divide el ciclo de instrucción en etapas independientes que se ejecutan en paralelo para diferentes instrucciones.</p>
-            <p><strong>Etapas clásicas (5 etapas):</strong></p>
-            <ul>
+            <p>La <strong>ruta de datos segmentada (pipeline)</strong> divide el ciclo de instrucción en etapas independientes que se ejecutan en paralelo para diferentes instrucciones, aumentando el rendimiento.</p>
+            <p><strong>Etapas clásicas de 5 segmentos:</strong></p>
+            <ol>
                 <li><strong>IF (Instruction Fetch):</strong> Búsqueda de la instrucción en memoria.</li>
                 <li><strong>ID (Instruction Decode):</strong> Decodificación y lectura de registros.</li>
                 <li><strong>EX (Execute):</strong> Ejecución en la ALU.</li>
                 <li><strong>MEM (Memory):</strong> Acceso a memoria de datos.</li>
                 <li><strong>WB (Write Back):</strong> Escritura del resultado en un registro.</li>
-            </ul>
+            </ol>
         </div>
 
         <div class="card-topic">
             <h3>📌 4.2 Ejecución de microoperaciones pipeline</h3>
-            <p>El pipeline permite solapar la ejecución de múltiples instrucciones. Sin embargo, existen <strong>riesgos (hazards)</strong>:</p>
+            <p>El pipeline permite solapar la ejecución de múltiples instrucciones, pero introduce <strong>riesgos (hazards)</strong>:</p>
             <ul>
-                <li><strong>Estructurales:</strong> hardware insuficiente (ej: un solo puerto de memoria).</li>
-                <li><strong>De datos:</strong> dependencia entre instrucciones (RAW, WAR, WAW).</li>
-                <li><strong>De control:</strong> provocados por saltos condicionales (se resuelven con predicción de saltos).</li>
+                <li><strong>Riesgos estructurales:</strong> Hardware insuficiente (ej: un solo puerto de memoria).</li>
+                <li><strong>Riesgos de datos:</strong> Dependencia entre instrucciones. Ej: instrucción B necesita el resultado de instrucción A.</li>
+                <li><strong>Riesgos de control:</strong> Provocados por saltos condicionales (se resuelven con predicción de saltos).</li>
             </ul>
-            <p><strong>Ejemplo de dependencia de datos:</strong><br>
-            <code>ADD R1, R2, R3</code><br>
-            <code>SUB R4, R1, R5</code>  (necesita el resultado de ADD)</p>
+            <p><strong>Soluciones:</strong> Burbujas (nops), forwarding (adelantamiento), predicción de saltos.</p>
+            <p>Existen herramientas como <strong>PipeScope</strong> para visualizar trazas de pipeline [citation:5].</p>
         </div>
 
         <div class="card-topic">
             <h3>📌 4.3 Procesador de conjunto reducido de instrucciones (RISC)</h3>
-            <p>Arquitectura que utiliza un conjunto pequeño y simple de instrucciones, todas de igual longitud (generalmente 32 bits).</p>
-            <p><strong>Características:</strong></p>
+            <p>Arquitectura que utiliza un conjunto pequeño y simple de instrucciones, todas de igual longitud. Sus características principales son:</p>
             <ul>
                 <li>Instrucciones ejecutadas en un ciclo de reloj.</li>
                 <li>Muchos registros de propósito general (32 o más).</li>
                 <li>Modos de direccionamiento simples (solo registro y literal).</li>
                 <li>Operaciones LOAD/STORE para acceder a memoria.</li>
-                <li>Ejemplos: ARM, MIPS, RISC-V.</li>
+                <li>Sin microcódigo (control hardwired).</li>
+                <li><strong>Ejemplos:</strong> ARM, MIPS, RISC-V.</li>
             </ul>
         </div>
 
         <div class="card-topic">
             <h3>📌 4.4 Procesador de conjunto de instrucciones complejo (CISC)</h3>
-            <p>Arquitectura con instrucciones poderosas que realizan múltiples operaciones (como leer memoria, procesar y guardar en una sola instrucción).</p>
-            <p><strong>Características:</strong></p>
+            <p>Arquitectura con instrucciones poderosas que realizan múltiples operaciones en una sola instrucción. Sus características son:</p>
             <ul>
                 <li>Instrucciones de longitud variable (1 a 15 bytes en x86).</li>
                 <li>Pocos registros visibles al programador.</li>
-                <li>Uso intensivo de microcódigo.</li>
-                <li>Modos de direccionamiento complejos.</li>
-                <li>Ejemplos: Intel x86, AMD64.</li>
+                <li>Uso intensivo de <strong>microcódigo</strong> almacenado en memoria de control [citation:4].</li>
+                <li>Modos de direccionamiento complejos (registro, inmediato, indirecto, indexado, etc.).</li>
+                <li><strong>Ejemplos:</strong> Intel x86, AMD64.</li>
             </ul>
             <p><strong>Comparativa RISC vs CISC:</strong></p>
             <table>
@@ -310,109 +346,122 @@
                     <tr><td>Modos direccionamiento</td><td>Pocos (~3-5)</td><td>Muchos (~10-20)</td></tr>
                     <tr><td>Microcódigo</td><td>No (hardwired)</td><td>Sí (microcódigo)</td></tr>
                     <tr><td>Consumo energético</td><td>Bajo</td><td>Alto</td></tr>
-                    <tr><td>Uso típico</td><td>Móviles, embebidos</td><td>PCs, servidores</td></tr>
+                    <tr><td>Uso típico</td><td>Móviles, embebidos, IoT</td><td>PCs, servidores, estaciones de trabajo</td></tr>
                 </tbody>
             </table>
         </div>
 
         <div class="card-topic">
             <h3>📌 4.5 Conceptos de CPU de alto rendimiento y otras innovaciones arquitecturales</h3>
-            <p><strong>Innovaciones clave:</strong></p>
+            <p>Las CPUs modernas incorporan varias innovaciones para mejorar el rendimiento:</p>
             <ul>
                 <li><strong>Ejecución fuera de orden (Out-of-Order):</strong> Reordena instrucciones para evitar bloqueos.</li>
-                <li><strong>Predicción de saltos:</strong> Adivina si un salto condicional se tomará o no.</li>
-                <li><strong>Multihilo simultáneo (SMT):</strong> Un núcleo ejecuta dos hilos en paralelo (Hyper-Threading de Intel).</li>
-                <li><strong>Turbo Boost:</strong> Aumenta frecuencia de reloj en cargas intensivas.</li>
-                <li><strong>Arquitectura big.LITTLE:</strong> Combina núcleos potentes y eficientes (ARM).</li>
+                <li><strong>Predicción de saltos:</strong> Adivina si un salto condicional se tomará o no, evitando vaciados del pipeline.</li>
+                <li><strong>Multihilo simultáneo (SMT):</strong> Un núcleo ejecuta dos hilos en paralelo. Intel lo llama Hyper-Threading [citation:8].</li>
+                <li><strong>Turbo Boost:</strong> Aumenta dinámicamente la frecuencia de reloj en cargas intensivas.</li>
+                <li><strong>Arquitectura big.LITTLE:</strong> Combina núcleos de alto rendimiento con núcleos de bajo consumo (ARM).</li>
             </ul>
+            <p><strong>Hyper-Threading:</strong> Permite que un núcleo físico se comporte como dos núcleos lógicos, mejorando el rendimiento hasta un 30% en aplicaciones multi-hilo [citation:8].</p>
         </div>
 
         <div class="resources">
             <strong>🔗 RECURSOS EXTERNOS - Unidad 4</strong><br>
-            🎥 <a href="https://www.youtube.com/watch?v=Q0wr-6bFQck" target="_blank">Video: RISC vs CISC (Computerphile, subtitulado)</a><br>
-            🖥️ <a href="https://www.cpu.land/pipeline" target="_blank">Explicación interactiva del pipeline (animaciones)</a><br>
-            📄 <a href="https://developer.arm.com/architectures/learn-the-architecture" target="_blank">Arquitectura RISC - Documentación oficial ARM</a><br>
-            📖 <a href="https://www.intel.com/content/www/us/en/architecture-and-technology/instruction-set-extensions.html" target="_blank">Intel CISC - Conjunto de instrucciones x86</a>
+            🎥 <a href="https://www.youtube.com/watch?v=cNN_tTXABUA" target="_blank">Video: How CPUs Work - Computerphile (YouTube)</a><br>
+            📘 <a href="https://www.geeksforgeeks.org/computer-organization-architecture/microprogramming-basics-1/" target="_blank">Microprogramming Basics - GeeksforGeeks</a><br>
+            🖥️ <a href="https://help.intervalzero.com/product_help/RTX/Content/PROJECTS/Subsystem/Hyper_Threading_Support.htm" target="_blank">Hyper-Threading Technology - Documentación oficial</a>
         </div>
     </div>
 
-    <!-- UNIDAD 5 -->
+    <!-- ============================================ -->
+    <!-- UNIDAD 5 - COMPLETA                           -->
+    <!-- ============================================ -->
     <div id="unit5" class="unit">
         <h2>Unidad 5. Multiprocesadores</h2>
         <p><strong>Objetivo:</strong> Diferenciar los sistemas multiprocesadores y uniprocesadores, a través de sus características técnicas para visualizar áreas de aplicación de estos sistemas.</p>
 
         <div class="card-topic">
             <h3>📌 5.1 Introducción</h3>
-            <p>Un <strong>multiprocesador</strong> es un sistema con dos o más procesadores (núcleos) que comparten el acceso a una memoria principal y periféricos. Se clasifican según la organización de su memoria y cómo se comunican.</p>
+            <p>Un <strong>multiprocesador</strong> es un sistema con dos o más procesadores (núcleos) que comparten el acceso a una memoria principal y periféricos. Se clasifican en:</p>
+            <ul>
+                <li><strong>UMA (Uniform Memory Access):</strong> Todos los CPUs acceden a la memoria con la misma latencia.</li>
+                <li><strong>NUMA (Non-Uniform Memory Access):</strong> El acceso a memoria local es más rápido que a memoria remota.</li>
+            </ul>
             <p><strong>Ventajas:</strong> Mayor rendimiento, tolerancia a fallos, escalabilidad.</p>
         </div>
 
         <div class="card-topic">
             <h3>📌 5.2 Sistemas de procesamiento paralelo</h3>
-            <p>Clasificación de Flynn:</p>
+            <p><strong>Clasificación de Flynn (Taxonomía):</strong></p>
             <ul>
-                <li><strong>SISD:</strong> Un solo flujo de instrucciones, un solo flujo de datos (uniprocesador tradicional).</li>
-                <li><strong>SIMD:</strong> Una instrucción, múltiples datos (GPUs, vectores).</li>
-                <li><strong>MISD:</strong> Múltiples instrucciones, un solo dato (raro).</li>
-                <li><strong>MIMD:</strong> Múltiples instrucciones, múltiples datos (multinúcleo, clusters).</li>
+                <li><strong>SISD (Single Instruction, Single Data):</strong> Uniprocesador tradicional.</li>
+                <li><strong>SIMD (Single Instruction, Multiple Data):</strong> Una instrucción opera sobre múltiples datos (GPUs, vectores).</li>
+                <li><strong>MISD (Multiple Instruction, Single Data):</strong> Raro, usado en sistemas de tolerancia a fallos.</li>
+                <li><strong>MIMD (Multiple Instruction, Multiple Data):</strong> Multiprocesadores, multinúcleo, clusters.</li>
             </ul>
-            <p><strong>Ley de Amdahl:</strong> La mejora del rendimiento está limitada por la parte secuencial del programa.</p>
+            <p><strong>Ley de Amdahl:</strong> La mejora del rendimiento está limitada por la parte secuencial del programa. Si el 10% es secuencial, la aceleración máxima es 10x aunque se usen infinitos núcleos.</p>
+            <p>En arquitecturas CMP (Chip Multiprocessor), se pueden explotar paralelismos a nivel de datos, instrucciones, hilos y transferencia de memoria [citation:6].</p>
         </div>
 
         <div class="card-topic">
             <h3>📌 5.3 Hardware multi-hilo</h3>
             <p>Permite que un núcleo físico ejecute varios hilos de ejecución simultáneamente, compartiendo recursos como la ALU y la caché.</p>
-            <p><strong>Tipos:</strong></p>
+            <p><strong>Tipos de multi-hilo:</strong></p>
             <ul>
                 <li><strong>Multihilo de grano grueso:</strong> Cambia de hilo en eventos largos (caché miss).</li>
-                <li><strong>Multihilo de grano fino:</strong> Cambia cada ciclo de reloj.</li>
-                <li><strong>Multihilo simultáneo (SMT):</strong> Varios hilos en el mismo ciclo (Hyper-Threading de Intel, SMT de AMD).</li>
+                <li><strong>Multihilo de grano fino:</strong> Cambia cada ciclo de reloj (round-robin).</li>
+                <li><strong>Multihilo simultáneo (SMT):</strong> Varios hilos en el mismo ciclo. Intel Hyper-Threading es un ejemplo [citation:8].</li>
             </ul>
-            <p><strong>Ejemplo:</strong> Intel Core i7 con 8 núcleos y 16 hilos (2 por núcleo).</p>
+            <p><strong>Ejemplo:</strong> Intel Core i7 con 8 núcleos físicos y 16 hilos lógicos (2 por núcleo).</p>
         </div>
 
         <div class="card-topic">
             <h3>📌 5.4 Núcleos</h3>
             <p>Un <strong>núcleo (core)</strong> es una unidad de procesamiento completa dentro de un chip, con su propia ALU, unidad de control y registros.</p>
-            <p><strong>Configuraciones:</strong></p>
+            <p><strong>Configuraciones actuales:</strong></p>
             <ul>
-                <li><strong>Uninúcleo (single-core):</strong> Un solo núcleo.</li>
-                <li><strong>Multinúcleo (multi-core):</strong> Dos o más núcleos en el mismo chip (dual-core, quad-core, octa-core).</li>
+                <li><strong>Uninúcleo (single-core):</strong> Un solo núcleo (obsoleto para PCs modernos).</li>
+                <li><strong>Multinúcleo (multi-core):</strong> Dos o más núcleos en el mismo chip (dual-core, quad-core, octa-core, hasta 128 núcleos en servidores).</li>
                 <li><strong>Muchos núcleos (many-core):</strong> Decenas o cientos de núcleos simples (GPUs, aceleradores).</li>
             </ul>
-            <p>Los núcleos pueden compartir caché L3 pero tienen L1 y L2 privadas.</p>
+            <p>En arquitecturas modernas, los núcleos comparten caché L3 pero tienen L1 y L2 privadas.</p>
         </div>
 
         <div class="card-topic">
             <h3>📌 5.5 Multiprocesadores conectados por un solo bus</h3>
-            <p>Varios CPUs se conectan a un <strong>bus compartido</strong> que da acceso a la memoria principal. Todos los procesadores ven la misma memoria física (UMA - Uniform Memory Access).</p>
-            <p><strong>Ventajas:</strong> Simple, bajo costo, coherencia de caché sencilla (protocolo de snooping).</p>
+            <p>Varios CPUs se conectan a un <strong>bus compartido</strong> que da acceso a la memoria principal. Todos los procesadores ven la misma memoria física (UMA).</p>
+            <p><strong>Ventajas:</strong> Simple, bajo costo, coherencia de caché sencilla (protocolo de snooping/bus sniffing).</p>
             <p><strong>Desventajas:</strong> El bus es un cuello de botella (solo una transferencia a la vez). Escalabilidad limitada (típicamente 2-8 procesadores).</p>
-            <p><strong>Ejemplo:</strong> Sistemas antiguos con doble socket en una placa base.</p>
+            <p><strong>Ejemplo:</strong> Sistemas antiguos con doble socket en una placa base, o sistemas embebidos pequeños.</p>
         </div>
 
         <div class="card-topic">
             <h3>📌 5.6 Multiprocesadores conectados por una red</h3>
-            <p>Los procesadores se interconectan mediante una <strong>red de comunicación</strong> (no un bus simple). Pueden tener memoria distribuida (NUMA - Non-Uniform Memory Access).</p>
-            <p><strong>Topologías comunes:</strong></p>
+            <p>Los procesadores se interconectan mediante una <strong>red de comunicación</strong> (no un bus simple). Típicamente son sistemas NUMA.</p>
+            <p><strong>Topologías comunes en redes de interconexión:</strong></p>
             <ul>
-                <li><strong>Malla 2D/3D:</strong> Usada en supercomputadoras (ej: Fugaku).</li>
+                <li><strong>Malla 2D/3D:</strong> Usada en supercomputadoras (ej: Sunway TaihuLight).</li>
                 <li><strong>Anillo (ring):</strong> Simple y económica (Intel QuickPath Interconnect).</li>
                 <li><strong>Hipercubo:</strong> Baja latencia para ciertos algoritmos.</li>
-                <li><strong>Conmutador de cruce (crossbar):</strong> Conexión no bloqueante.</li>
+                <li><strong>Conmutador de cruce (crossbar):</strong> Conexión no bloqueante, pero costosa.</li>
                 <li><strong>Red en estrella / árbol:</strong> Usada en clusters con switches Ethernet.</li>
             </ul>
-            <p><strong>Ejemplo real:</strong> Top500 (supercomputadoras) usan redes como InfiniBand, Omni-Path.</p>
-            <p><strong>Ventajas:</strong> Alta escalabilidad (cientos o miles de nodos).<br>
-            <strong>Desventajas:</strong> Mayor latencia en accesos remotos (NUMA).</p>
+            <p><strong>Ejemplo real - TOP500 (supercomputadoras):</strong></p>
+            <table>
+                <thead><tr><th>Rank</th><th>Supercomputadora</th><th>Cores</th><th>Rendimiento (TFLOPS)</th></tr></thead>
+                <tbody>
+                    <tr><td>1</td><td>Sunway TaihuLight (China)</td><td>10,649,600</td><td>93,014.6</td></tr>
+                    <tr><td>2</td><td>Tianhe-2 (China)</td><td>3,120,000</td><td>33,862.7</td></tr>
+                    <tr><td>3</td><td>Piz Daint (Suiza)</td><td>361,760</td><td>19,590.0</td></tr>
+                </tbody>
+            </table>
+            <p><em>Fuente: TOP500 [citation:7]</em></p>
         </div>
 
         <div class="resources">
             <strong>🔗 RECURSOS EXTERNOS - Unidad 5</strong><br>
-            🧠 <a href="https://www.youtube.com/watch?v=hICvH0N3W7Y" target="_blank">Video: Multiprocesadores y paralelismo (Arquitectura de Computadoras)</a><br>
-            📄 <a href="https://www.macs.hw.ac.uk/~hwloidl/Courses/F21SC/slides/lecture10_parallel.pdf" target="_blank">PDF: Sistemas de procesamiento paralelo - Universidad Heriot-Watt</a><br>
-            🔁 <a href="https://www.intel.com/content/www/us/en/gaming/resources/hyper-threading.html" target="_blank">Hardware multi-hilo: Hyper-Threading de Intel (explicación oficial)</a><br>
-            🖧 <a href="https://www.top500.org/" target="_blank">TOP500: Lista de supercomputadoras (redes e interconexiones)</a>
+            🎥 <a href="https://www.youtube.com/@Computerphile" target="_blank">Canal Computerphile - Videos sobre arquitectura de computadoras</a><br>
+            📊 <a href="https://www.top500.org/" target="_blank">TOP500 - Lista oficial de supercomputadoras más potentes del mundo</a><br>
+            📘 <a href="https://www.geeksforgeeks.org/computer-organization-architecture/microprogramming-basics-1/" target="_blank">Microprogramming y arquitectura de CPU - GeeksforGeeks</a>
         </div>
     </div>
 </div>
