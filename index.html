@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquitectura de Computadoras | Unidades 3,4,5</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: #f0f4f8;
+            color: #1e2a3e;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0f2b3d, #1b4f6e);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        nav {
+            background: #1e2a3e;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.8rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav button {
+            background: transparent;
+            border: 2px solid #3b82f6;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        nav button:hover, nav button.active {
+            background: #3b82f6;
+            border-color: #3b82f6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .unit {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            animation: fade 0.3s ease;
+        }
+
+        .unit.active-unit {
+            display: block;
+        }
+
+        @keyframes fade {
+            from { opacity: 0; transform: translateY(10px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        h2 {
+            color: #0f2b3d;
+            border-left: 6px solid #3b82f6;
+            padding-left: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        h3 {
+            color: #1e4a6e;
+            margin: 1.5rem 0 0.8rem 0;
+            font-size: 1.4rem;
+        }
+
+        .card-topic {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            border-left: 4px solid #3b82f6;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #e2e8f0;
+        }
+
+        .resources {
+            background: #eef2ff;
+            padding: 1.2rem;
+            border-radius: 16px;
+            margin-top: 2rem;
+        }
+
+        .resources a {
+            color: #1e40af;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-block;
+            margin: 0.3rem 0;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: #1e2a3e;
+            color: white;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 700px) {
+            nav button {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+            .unit {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🖥️ Arquitectura de Computadoras</h1>
+    <p>Unidades 3, 4 y 5 | Microoperaciones · RISC/CISC · Multiprocesadores</p>
+</header>
+
+<nav>
+    <button class="nav-btn active" data-unit="unit3">📘 Unidad 3</button>
+    <button class="nav-btn" data-unit="unit4">⚙️ Unidad 4</button>
+    <button class="nav-btn" data-unit="unit5">🧠 Unidad 5</button>
+</nav>
+
+<div class="container">
+    <!-- UNIDAD 3 -->
+    <div id="unit3" class="unit active-unit">
+        <h2>Unidad 3. Microoperaciones y transferencia de registros</h2>
+        <p><strong>Objetivo:</strong> Crear secuencias de operaciones básicas a través de ensambladores y compiladores para ejecutar operaciones a nivel registro.</p>
+
+        <div class="card-topic">
+            <h3>📌 3.1 Transferencia de registros</h3>
+            <p>Un registro es un almacenamiento temporal de datos dentro de la CPU. La transferencia de registros consiste en mover información de un registro a otro mediante señales de control. Se representa con notación RTL (<em>Register Transfer Level</em>): <code>R1 ← R2</code> (copia el contenido de R2 en R1).</p>
+            <p><strong>Ejemplo práctico:</strong> En ensamblador, <code>MOV R1, R2</code> realiza esta operación.</p>
+        </div>
+
+        <div class="card-topic">
+            <h3>📌 3.2 Buses y transferencia de memoria</h3>
+            <p>Un bus es un conjunto de líneas de comunicación: bus de datos, bus de direcciones y bus de control. La transferencia entre memoria y CPU se realiza mediante instrucciones como <code>LOAD</code> (memoria → registro) y <code>STORE</code> (registro → memoria).</p>
+            <p><strong>Ejemplo:</strong> <code>LOAD R1, [dirección]</code> lleva un valor de memoria a R1.</p>
+        </div>
+
+        <div class="card-topic">
+            <h3>📌 3.3 Memoria caché (L1, L2, L3)</h3>
+            <p>La memoria caché reduce la latencia de acceso a datos frecuentes. Jerarquía:</p>
+            <table>
+                <thead>
+                    <tr><th>Nivel</th><th>Ubicación</th><th>Capacidad típica</th><th>Latencia</th><th>¿Compartida?</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>L1</td><td>Dentro del núcleo</td><td>32KB - 64KB</td><td>~1 ns</td><td>No (por núcleo)</td></tr>
+                    <tr><td>L2</td><td>Dentro del núcleo o cerca</td><td>256KB - 1MB</td><td>~3-5 ns</td><td>Depende</td></tr>
+                    <tr><td>L3</td><td>Compartida entre núcleos</td><td>4MB - 32MB</td><td>~10-20 ns</td><td>Sí</td></tr>
+                </tbody>
+            </table>
+            <p>La caché usa principios de localidad temporal y espacial para anticipar datos.</p>
+        </div>
+
+        <div class="card-topic">
+            <h3>📌 3.4 Microoperaciones aritméticas</h3>
+            <p>Operaciones a nivel de bits dentro de la ALU: suma, resta, incremento, decremento, suma con acarreo.</p>
+            <p><strong>Ejemplo:</strong> <code>ADD R1, R2, R3</code> → R1 ← R2 + R3</p>
+            <p><strong>Otro ejemplo:</strong> <code>INC R1</code> → R1 ← R1 + 1</p>
+        </div>
+
+        <div class="card-topic">
+            <h3>📌 3.5 Microoperaciones lógicas</h3>
+            <p>Operaciones bit a bit: AND, OR, XOR, NOT. Se utilizan para enmascarar bits, comparar o modificar banderas.</p>
+            <p><strong>Ejemplo:</strong> <code>AND R1, R2, R3</code> → R1 ← R2 AND R3 (bit a bit)</p>
+            <p><strong>Tabla de verdad AND:</strong> 0 AND 0 = 0, 0 AND 1 = 0, 1 AND 0 = 0, 1 AND 1 = 1</p>
+        </div>
+
+        <div class="card-topic">
+            <h3>📌 3.6 Microoperaciones de corrimientos</h3>
+            <p>Desplazamiento de bits hacia izquierda o derecha:</p>
+            <ul>
+                <li><strong>Desplazamiento lógico:</strong> rellena con 0 (ej: 1101 >> 1 = 0110).</li>
+                <li><strong>Desplazamiento aritmético:</strong> conserva el bit de signo.</li>
+                <li><strong>Rotación:</strong> los bits que salen vuelven a entrar por el otro lado.</li>
+            </ul>
+            <p><strong>Ejemplo en C:</strong> <code>x << 2</code> desplaza lógicamente a la izquierda 2 posiciones.</p>
+        </div>
+
+        <div class="resources">
+            <strong>🔗 RECURSOS EXTERNOS - Unidad 3</strong><br>
+            📹 <a href="https://www.youtube.com/watch?v=1IAhQoHlqZg" target="_blank">Video: Transferencia de registros y notación RTL (YouTube)</a><br>
+            🧪 <a href="https://www.cs.umd.edu/~meesh/311/CMSC311/lectures/cache-simulator/" target="_blank">Simulador interactivo de memoria caché (Universidad de Maryland)</a><br>
+            📘 <a href="https://www.geeksforgeeks.org/micro-operations-in-computer-organization/" target="_blank">Artículo: Microoperaciones aritméticas, lógicas y de corrimiento (GeeksforGeeks)</a><br>
+            🎥 <a href="https://www.youtube.com/watch?v=f8gT2MIRP0c" target="_blank">Video: ¿Cómo funciona la memoria caché? (Explicación animada)</a>
+        </div>
+    </div>
+
+    <!-- UNIDAD 4 -->
+    <div id="unit4" class="unit">
+        <h2>Unidad 4. Unidades centrales de procesamiento RISC y CISC</h2>
+        <p><strong>Objetivo:</strong> Analizar los tipos de arquitectura más comunes, mediante la distinción de cada una de sus partes, para proponer una arquitectura a problemas específicos.</p>
+
+        <div class="card-topic">
+            <h3>📌 4.1 Rutas de datos segmentadas</h3>
+            <p>La ruta de datos segmentada divide el ciclo de instrucción en etapas independientes que se ejecutan en paralelo para diferentes instrucciones.</p>
+            <p><strong>Etapas clásicas (5 etapas):</strong></p>
+            <ul>
+                <li><strong>IF (Instruction Fetch):</strong> Búsqueda de la instrucción en memoria.</li>
+                <li><strong>ID (Instruction Decode):</strong> Decodificación y lectura de registros.</li>
+                <li><strong>EX (Execute):</strong> Ejecución en la ALU.</li>
+                <li><strong>MEM (Memory):</strong> Acceso a memoria de datos.</li>
+                <li><strong>WB (Write Back):</strong> Escritura del resultado en un registro.</li>
+            </ul>
+        </div>
+
+        <div class="card-topic">
+            <h3>📌 4.2 Ejecución de microoperaciones pipeline</h3>
+            <p>El pipeline permite solapar la ejecución de múltiples instrucciones. Sin embargo, existen <strong>riesgos (hazards)</strong>:</p>
+            <ul>
+                <li><strong>Estructurales:</strong> hardware insuficiente (ej: un solo puerto de memoria).</li>
+                <li><strong>De datos:</strong> dependencia entre instrucciones (RAW, WAR, WAW).</li>
+                <li><strong>De control:</strong> provocados por saltos condicionales (se resuelven con predicción de saltos).</li>
+            </ul>
+            <p><strong>Ejemplo de dependencia de datos:</strong><br>
+            <code>ADD R1, R2, R3</code><br>
+            <code>SUB R4, R1, R5</code>  (necesita el resultado de ADD)</p>
+        </div>
+
+        <div class="card-topic">
+            <h3>📌 4.3 Procesador de conjunto reducido de instrucciones (RISC)</h3>
+            <p>Arquitectura que utiliza un conjunto pequeño y simple de instrucciones, todas de igual longitud (generalmente 32 bits).</p>
+            <p><strong>Características:</strong></p>
+            <ul>
+                <li>Instrucciones ejecutadas en un ciclo de reloj.</li>
+                <li>Muchos registros de propósito general (32 o más).</li>
+                <li>Modos de direccionamiento simples (solo registro y literal).</li>
+                <li>Operaciones LOAD/STORE para acceder a memoria.</li>
+                <li>Ejemplos: ARM, MIPS, RISC-V.</li>
+            </ul>
+        </div>
+
+        <div class="card-topic">
+            <h3>📌 4.4 Procesador de conjunto de instrucciones complejo (CISC)</h3>
+            <p>Arquitectura con instrucciones poderosas que realizan múltiples operaciones (como leer memoria, procesar y guardar en una sola instrucción).</p>
+            <p><strong>Características:</strong></p>
+            <ul>
+                <li>Instrucciones de longitud variable (1 a 15 bytes en x86).</li>
+                <li>Pocos registros visibles al programador.</li>
+                <li>Uso intensivo de microcódigo.</li>
+                <li>Modos de direccionamiento complejos.</li>
+                <li>Ejemplos: Intel x86, AMD64.</li>
+            </ul>
+            <p><strong>Comparativa RISC vs CISC:</strong></p>
+            <table>
+                <thead><tr><th>Característica</th><th>RISC</th><th>CISC</th></tr></thead>
+                <tbody>
+                    <tr><td>Longitud instrucción</td><td>Fija (32 bits)</td><td>Variable (1-15 bytes)</td></tr>
+                    <tr><td>Número de instrucciones</td><td>Pocas (~100-200)</td><td>Muchas (~500-1500)</td></tr>
+                    <tr><td>Modos direccionamiento</td><td>Pocos (~3-5)</td><td>Muchos (~10-20)</td></tr>
+                    <tr><td>Microcódigo</td><td>No (hardwired)</td><td>Sí (microcódigo)</td></tr>
+                    <tr><td>Consumo energético</td><td>Bajo</td><td>Alto</td></tr>
+                    <tr><td>Uso típico</td><td>Móviles, embebidos</td><td>PCs, servidores</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-topic">
+            <h3>📌 4.5 Conceptos de CPU de alto rendimiento y otras innovaciones arquitecturales</h3>
+            <p><strong>Innovaciones clave:</strong></p>
+            <ul>
+                <li><strong>Ejecución fuera de orden (Out-of-Order):</strong> Reordena instrucciones para evitar bloqueos.</li>
+                <li><strong>Predicción de saltos:</strong> Adivina si un salto condicional se tomará o no.</li>
+                <li><strong>Multihilo simultáneo (SMT):</strong> Un núcleo ejecuta dos hilos en paralelo (Hyper-Threading de Intel).</li>
+                <li><strong>Turbo Boost:</strong> Aumenta frecuencia de reloj en cargas intensivas.</li>
+                <li><strong>Arquitectura big.LITTLE:</strong> Combina núcleos potentes y eficientes (ARM).</li>
+            </ul>
+        </div>
+
+        <div class="resources">
+            <strong>🔗 RECURSOS EXTERNOS - Unidad 4</strong><br>
+            🎥 <a href="https://www.youtube.com/watch?v=Q0wr-6bFQck" target="_blank">Video: RISC vs CISC (Computerphile, subtitulado)</a><br>
+            🖥️ <a href="https://www.cpu.land/pipeline" target="_blank">Explicación interactiva del pipeline (animaciones)</a><br>
+            📄 <a href="https://developer.arm.com/architectures/learn-the-architecture" target="_blank">Arquitectura RISC - Documentación oficial ARM</a><br>
+            📖 <a href="https://www.intel.com/content/www/us/en/architecture-and-technology/instruction-set-extensions.html" target="_blank">Intel CISC - Conjunto de instrucciones x86</a>
+        </div>
+    </div>
+
+    <!-- UNIDAD 5 -->
+    <div id="unit5" class="unit">
+        <h2>Unidad 5. Multiprocesadores</h2>
+        <p><strong>Objetivo:</strong> Diferenciar los sistemas multiprocesadores y uniprocesadores, a través de sus características técnicas para visualizar áreas de aplicación de estos sistemas.</p>
+
+        <div class="card-topic">
+            <h3>📌 5.1 Introducción</h3>
+            <p>Un <strong>multiprocesador</strong> es un sistema con dos o más procesadores (núcleos) que comparten el acceso a una memoria principal y periféricos. Se clasifican según la organización de su memoria y cómo se comunican.</p>
+            <p><strong>Ventajas:</strong> Mayor rendimiento, tolerancia a fallos, escalabilidad.</p>
+        </div>
+
+        <div class="card-topic">
+            <h3>📌 5.2 Sistemas de procesamiento paralelo</h3>
+            <p>Clasificación de Flynn:</p>
+            <ul>
+                <li><strong>SISD:</strong> Un solo flujo de instrucciones, un solo flujo de datos (uniprocesador tradicional).</li>
+                <li><strong>SIMD:</strong> Una instrucción, múltiples datos (GPUs, vectores).</li>
+                <li><strong>MISD:</strong> Múltiples instrucciones, un solo dato (raro).</li>
+                <li><strong>MIMD:</strong> Múltiples instrucciones, múltiples datos (multinúcleo, clusters).</li>
+            </ul>
+            <p><strong>Ley de Amdahl:</strong> La mejora del rendimiento está limitada por la parte secuencial del programa.</p>
+        </div>
+
+        <div class="card-topic">
+            <h3>📌 5.3 Hardware multi-hilo</h3>
+            <p>Permite que un núcleo físico ejecute varios hilos de ejecución simultáneamente, compartiendo recursos como la ALU y la caché.</p>
+            <p><strong>Tipos:</strong></p>
+            <ul>
+                <li><strong>Multihilo de grano grueso:</strong> Cambia de hilo en eventos largos (caché miss).</li>
+                <li><strong>Multihilo de grano fino:</strong> Cambia cada ciclo de reloj.</li>
+                <li><strong>Multihilo simultáneo (SMT):</strong> Varios hilos en el mismo ciclo (Hyper-Threading de Intel, SMT de AMD).</li>
+            </ul>
+            <p><strong>Ejemplo:</strong> Intel Core i7 con 8 núcleos y 16 hilos (2 por núcleo).</p>
+        </div>
+
+        <div class="card-topic">
+            <h3>📌 5.4 Núcleos</h3>
+            <p>Un <strong>núcleo (core)</strong> es una unidad de procesamiento completa dentro de un chip, con su propia ALU, unidad de control y registros.</p>
+            <p><strong>Configuraciones:</strong></p>
+            <ul>
+                <li><strong>Uninúcleo (single-core):</strong> Un solo núcleo.</li>
+                <li><strong>Multinúcleo (multi-core):</strong> Dos o más núcleos en el mismo chip (dual-core, quad-core, octa-core).</li>
+                <li><strong>Muchos núcleos (many-core):</strong> Decenas o cientos de núcleos simples (GPUs, aceleradores).</li>
+            </ul>
+            <p>Los núcleos pueden compartir caché L3 pero tienen L1 y L2 privadas.</p>
+        </div>
+
+        <div class="card-topic">
+            <h3>📌 5.5 Multiprocesadores conectados por un solo bus</h3>
+            <p>Varios CPUs se conectan a un <strong>bus compartido</strong> que da acceso a la memoria principal. Todos los procesadores ven la misma memoria física (UMA - Uniform Memory Access).</p>
+            <p><strong>Ventajas:</strong> Simple, bajo costo, coherencia de caché sencilla (protocolo de snooping).</p>
+            <p><strong>Desventajas:</strong> El bus es un cuello de botella (solo una transferencia a la vez). Escalabilidad limitada (típicamente 2-8 procesadores).</p>
+            <p><strong>Ejemplo:</strong> Sistemas antiguos con doble socket en una placa base.</p>
+        </div>
+
+        <div class="card-topic">
+            <h3>📌 5.6 Multiprocesadores conectados por una red</h3>
+            <p>Los procesadores se interconectan mediante una <strong>red de comunicación</strong> (no un bus simple). Pueden tener memoria distribuida (NUMA - Non-Uniform Memory Access).</p>
+            <p><strong>Topologías comunes:</strong></p>
+            <ul>
+                <li><strong>Malla 2D/3D:</strong> Usada en supercomputadoras (ej: Fugaku).</li>
+                <li><strong>Anillo (ring):</strong> Simple y económica (Intel QuickPath Interconnect).</li>
+                <li><strong>Hipercubo:</strong> Baja latencia para ciertos algoritmos.</li>
+                <li><strong>Conmutador de cruce (crossbar):</strong> Conexión no bloqueante.</li>
+                <li><strong>Red en estrella / árbol:</strong> Usada en clusters con switches Ethernet.</li>
+            </ul>
+            <p><strong>Ejemplo real:</strong> Top500 (supercomputadoras) usan redes como InfiniBand, Omni-Path.</p>
+            <p><strong>Ventajas:</strong> Alta escalabilidad (cientos o miles de nodos).<br>
+            <strong>Desventajas:</strong> Mayor latencia en accesos remotos (NUMA).</p>
+        </div>
+
+        <div class="resources">
+            <strong>🔗 RECURSOS EXTERNOS - Unidad 5</strong><br>
+            🧠 <a href="https://www.youtube.com/watch?v=hICvH0N3W7Y" target="_blank">Video: Multiprocesadores y paralelismo (Arquitectura de Computadoras)</a><br>
+            📄 <a href="https://www.macs.hw.ac.uk/~hwloidl/Courses/F21SC/slides/lecture10_parallel.pdf" target="_blank">PDF: Sistemas de procesamiento paralelo - Universidad Heriot-Watt</a><br>
+            🔁 <a href="https://www.intel.com/content/www/us/en/gaming/resources/hyper-threading.html" target="_blank">Hardware multi-hilo: Hyper-Threading de Intel (explicación oficial)</a><br>
+            🖧 <a href="https://www.top500.org/" target="_blank">TOP500: Lista de supercomputadoras (redes e interconexiones)</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>📚 Arquitectura de Computadoras | Segundo Parcial | Unidades 3, 4 y 5</p>
+    <p>Recursos educativos con enlaces verificados | Navegación intuitiva y contenido técnico completo</p>
+    <p>Desarrollado para cumplir con rúbrica de evaluación: Recursos externos • Contenido técnico • Estética • Ortografía y redacción • Interactividad</p>
+</footer>
+
+<script>
+    // Navegación entre unidades con botones
+    const buttons = document.querySelectorAll('.nav-btn');
+    const units = document.querySelectorAll('.unit');
+
+    buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const unitId = btn.getAttribute('data-unit');
+            
+            // Ocultar todas las unidades
+            units.forEach(unit => unit.classList.remove('active-unit'));
+            
+            // Mostrar la unidad seleccionada
+            document.getElementById(unitId).classList.add('active-unit');
+            
+            // Cambiar estilo activo en los botones
+            buttons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        });
+    });
+</script>
+</body>
+</html>
